@@ -11,6 +11,12 @@ else
   band=$3
 fi 
 
+#List of mobile clients
+#declare -a clients=("iPhone7Plus")
+#declare -a clients=("GalaxyS6EdgePlus" "iPhone7Plus" "iPadGen5" "MBP2014")
+#declare -a clients=("25" "21" "23")
+declare -a clients=("23")
+
 mkdir -p $firmwareVersion/$apName #create new folders if needed
 # Get today date for use in log file name
 dtToday=$(TZ=":America/Los_Angeles" date '+%Y'-'%m'-'%d');
@@ -22,12 +28,6 @@ logLocation=$firmwareVersion/$apName/$logFile
 echo "Logging results in $logLocation"
 
 ipPool="10.1.21." # for use as prefix later, in a for-loop
-
-#List of mobile clients
-#declare -a clients=("iPhone7Plus")
-#declare -a clients=("GalaxyS6EdgePlus" "iPhone7Plus" "iPadGen5" "MBP2014")
-#declare -a clients=("25" "21" "23")
-declare -a clients=("23")
 
 duration=30 #for quick tests
 #duration=600  #to give controller more than 5 minutes to gather data for test client
