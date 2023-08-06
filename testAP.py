@@ -1,5 +1,5 @@
 import sys # Needed to read command line arguments
-import os # Needed create folders and files
+from pathlib import Path # Needed create folders and files
 import datetime # Needed for use date and time
 
 #right_now = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
@@ -28,16 +28,18 @@ else:
     ap_name = cli_args[2]
     band = cli_args[3]
     
-    # Create new folders if needed to store logs
-    os.mkdir(firmware/ap_name) 
+    # Create folders to store logs
+    Path("./firmware/ap_name").mkdir(parents=True, exist_ok=True)
     # Store today's date for use in log file name
     date_today = datetime.datetime.now().strftime("%04Y-%02m-%02d")
     # Contruct log file name
-    log_file = date_today + firmware + ap_name + band + ".log"
+    log_file = date_today + "-" + firmware + "-" + ap_name + "-" + band + ".log"
     # Contruct log file location
-    log_location = firmware/ap_name/log_file
+    log_location = firmware + "/" + ap_name + "/" + log_file
+    #print(log_location)
     # Show the location and name of log file
-    print("Logging results in %s.") % (log_location)
+    log_message = "Logging results in %s" % (log_location)
+    print(log_message)
     
     clients = cli_args[4:arg_count] # Create list of mobile clients
     # Below line works same as above line, but I like how the above line looks
@@ -55,10 +57,10 @@ else:
         print(direction) # Show direction on screen
         if direction == "DN":
             # The -R sets the reverse direction, so the mobile client generates and sends the data to server
-            base_command = "iperf3 --forceflush -t" + duration + " -i5 -V -R -c"
+            base_command = "iperf3 --forceflush -t" + str(duration) + " -i5 -V -R -c"
             print(base_command)
         else:
-            base_command = "iperf3 --forceflush -t" + duration + " -i5 -V -c"
+            base_command = "iperf3 --forceflush -t" + str(duration) + " -i5 -V -c"
             print(base_command)
     
         # Insert some lines for better visibility and readability of log
@@ -68,7 +70,7 @@ else:
     
         #echo $direction >> $logLocation # insert direction into log
         for client in clients:
-            print(client)
+            #print(client)
             # Need detailed time stamp for tests
             right_now = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
             print(right_now)
@@ -76,9 +78,10 @@ else:
 
             # Set number of prallel streams
             for streams in range(1,11): 
-                print(streams)
+                #print(streams)
                 # The complete iPerf3 command 
-                complete_command = base_command + ip_pool + client + " -P" + streams
+                complete_command = base_command + ip_pool + client + " -P" + str(streams)
+                print(complete_command)
                 #echo "Executing $finalCommand" #show current command on screen
                 #echo $finalCommand >> $logLocation 
                 #$finalCommand >> $logLocation # insert current command into log
