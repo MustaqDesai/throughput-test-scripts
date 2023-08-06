@@ -61,26 +61,26 @@ else:
             base_command = "iperf3 --forceflush -t" + duration + " -i5 -V -c"
             print(base_command)
     
-    # Insert some lines for better visibility and readability of log
-    # Need to figure out how to insert content into log file
-    #echo "_________________________________________________________________" >> $logLocation
-    #echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" >> $logLocation
- 
-    #echo $direction >> $logLocation # insert direction into log
-    for client in clients:
-        print(client)
-        # Need detailed time stamp for tests
-        right_now = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
-        print(right_now)
-        #echo "$dtNow" >> $logLocation
+        # Insert some lines for better visibility and readability of log
+        # Need to figure out how to insert content into log file
+        #echo "_________________________________________________________________" >> $logLocation
+        #echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" >> $logLocation
+    
+        #echo $direction >> $logLocation # insert direction into log
+        for client in clients:
+            print(client)
+            # Need detailed time stamp for tests
+            right_now = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
+            print(right_now)
+            #echo "$dtNow" >> $logLocation
 
-        # Set number of prallel streams
-        for streams in range(1,11): 
-            print(streams)
-            # The complete iPerf3 command 
-            complete_command = base_command + ip_pool + client + " -P" + streams
-            #echo "Executing $finalCommand" #show current command on screen
-            #echo $finalCommand >> $logLocation 
-            #$finalCommand >> $logLocation # insert current command into log
+            # Set number of prallel streams
+            for streams in range(1,11): 
+                print(streams)
+                # The complete iPerf3 command 
+                complete_command = base_command + ip_pool + client + " -P" + streams
+                #echo "Executing $finalCommand" #show current command on screen
+                #echo $finalCommand >> $logLocation 
+                #$finalCommand >> $logLocation # insert current command into log
 
             
