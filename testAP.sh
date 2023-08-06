@@ -59,7 +59,7 @@ for direction in DN UP; do
 
    # Secondary loop that controls the number of parallel streams
    for streams in {1..10}; do
-     #the findal ready to use iperf3 command 
+     #the final ready to use iperf3 command 
      finalCommand="$baseCommand $ipPool$client -P$streams"
      echo "Executing $finalCommand" #show current command on screen
      echo $finalCommand >> $logLocation 
