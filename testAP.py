@@ -1,28 +1,26 @@
-import sys # Need it read command line arguments
-    
-print("Script needs at least 4 arguments:")
-print("Firmware version, friendly AP name, band (2G or 5G), followed by ip address of client(s)")
-print("CLI example: python3 testAP.py 1.23.456 UAP-AC-Pro 2G 23") 
+import sys # Need it to read command line arguments
 
-# confirm all requried input is entered
-cli_args = sys.argv #store all the commnd line args
+# Modify ip address pool if needed, but should not have to modify it often. 
+ipPool="10.1.21." # for use as prefix later, in a for-loop 
+
+intro_message = """Script needs at least 4 arguments:
+Firmware version, friendly AP name, band (2G or 5G), followed by IP address of client(s).
+For client IP address, enter only the last octet.
+Example: python3 testAP.py 1.23.456 UAP-AC-Pro 2G 23"""  
+#print(intro_message)
+
+cli_args = sys.argv # Store the commnd line args
 arg_count = len(cli_args)
-print(arg_count)
-print(cli_args)
 
-if arg_count < 5:
-    print("Provide at least 4 arguments.")
+if arg_count < 5: # Confirm requried input is entered
+    print(intro_message)
 else:
-    # cli_args[0] is the name of file, so we need next 3
+    # Name of this file is cli_args[0], so we need next 3 args
     firmware = cli_args[1]
     ap_name = cli_args[2]
     band = cli_args[3]
-    print(firmware)
-    print(ap_name)
-    print(band)
     
-    clients = cli_args[4:arg_count]
+    clients = cli_args[4:arg_count] # Create list of mobile clients
+    # Below line works same as above line
+    #clients = cli_args[4:]
     print(clients)
-
-    ipPool="10.1.21." # for use as prefix later, in a for-loop
-    # string loop with element #4 (5th element). Prior elements are used above.
