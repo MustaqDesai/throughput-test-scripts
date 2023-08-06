@@ -6,7 +6,10 @@ import datetime # Needed for use date and time
 #print(right_now)
 
 # Modify ip address pool if needed, but should not have to modify it often. 
-ipPool="10.1.21." # for use as prefix later, in a for-loop 
+ip_pool = "10.1.21." # for use as prefix later, in the for-loop with clients
+
+duration = 30 # For quick tests
+#duration = 600  # To give controller more than 5 minutes to gather data for test client
 
 intro_message = """Script needs at least 4 arguments:
 Firmware version, friendly AP name, Wi-Fi band (2G or 5G), followed by IP address of client(s).
@@ -41,5 +44,43 @@ else:
     #clients = cli_args[4:]
     print(clients)
 
-    #for client in clients:
+    base_command = "" # Start with empty string, to build an iPerf3 command
 
+    # Need to rememer that tests are controlled/executed/run from server, but are executed for mobile clients
+    # DN is when the sever is receving traffic from client
+    # UP is when the server is sending traffic to client
+    directions=["DN","UP"]
+    # Main loop that sets direction of iPerf3 tests
+    for direction in directions:
+        print(direction) # Show direction on screen
+        if direction == "DN":
+            # The -R sets the reverse direction, so the mobile client generates and sends the data to server
+            base_command = "iperf3 --forceflush -t" + duration + " -i5 -V -R -c"
+            print(base_command)
+        else:
+            base_command = "iperf3 --forceflush -t" + duration + " -i5 -V -c"
+            print(base_command)
+    
+    # Insert some lines for better visibility and readability of log
+    # Need to figure out how to insert content into log file
+    #echo "_________________________________________________________________" >> $logLocation
+    #echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" >> $logLocation
+ 
+    #echo $direction >> $logLocation # insert direction into log
+    for client in clients:
+        print(client)
+        # Need detailed time stamp for tests
+        right_now = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
+        print(right_now)
+        #echo "$dtNow" >> $logLocation
+
+        # Set number of prallel streams
+        for streams in range(1,11): 
+            print(streams)
+            # The complete iPerf3 command 
+            complete_command = base_command + ip_pool + client + " -P" + streams
+            #echo "Executing $finalCommand" #show current command on screen
+            #echo $finalCommand >> $logLocation 
+            #$finalCommand >> $logLocation # insert current command into log
+
+            
