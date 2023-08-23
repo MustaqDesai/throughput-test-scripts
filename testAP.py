@@ -1,12 +1,13 @@
-import sys # Needed to read command line arguments
-from pathlib import Path # Needed create folders and files
-import datetime # Needed for use date and time
+import sys # To read command line arguments
+from pathlib import Path # To create folders and files
+import datetime # To use date and time
+import iperf3 # To create and use iperf3 client
 
 #right_now = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
 #print(right_now)
 
 # Modify ip address pool if needed, but should not have to modify it often. 
-ip_pool = "10.1.21." # for use as prefix later, in the for-loop with clients
+ip_pool = "10.1.32." # for use as prefix later, in the for-loop with iperf servers
 
 duration = 30 # For quick tests
 #duration = 600  # To give controller more than 5 minutes to gather data for test client
@@ -41,12 +42,20 @@ else:
     log_message = "Logging results in %s" % (log_location)
     print(log_message)
     
-    clients = cli_args[4:arg_count] # Create list of mobile clients
+    iperf_servers = cli_args[4:arg_count] # Create list of iperf servers
     # Below line works same as above line, but I like how the above line looks
     #clients = cli_args[4:]
-    print(clients)
+    #print(clients)
 
     base_command = "" # Start with empty string, to build an iPerf3 command
+    
+    # Create iPerf3 client
+    iperf_client = iperf3.Client()
+    iperf_client.duration = duration
+    iperf_client.verbose =  True
+    #iperf_client.json_output = False
+    #iperf_client = True
+
 
     # Need to rememer that tests are controlled/executed/run from server, but are executed for mobile clients
     # DN is when the sever is receving traffic from client
@@ -58,10 +67,12 @@ else:
         if direction == "DN":
             # The -R sets the reverse direction, so the mobile client generates and sends the data to server
             base_command = "iperf3 --forceflush -t" + str(duration) + " -i5 -V -R -c"
-            print(base_command)
+            iperf_client.reverse = True
+            #print(base_command)
         else:
             base_command = "iperf3 --forceflush -t" + str(duration) + " -i5 -V -c"
-            print(base_command)
+            iperf_client.reverse = False
+            #print(base_command)
     
         # Insert some lines for better visibility and readability of log
         # Need to figure out how to insert content into log file
@@ -69,7 +80,8 @@ else:
         #echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^" >> $logLocation
     
         #echo $direction >> $logLocation # insert direction into log
-        for client in clients:
+        for iperf_server in iperf_servers:
+            iperf_client.server_hostname = ip_pool + iperf_server
             #print(client)
             # Need detailed time stamp for tests
             right_now = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
@@ -77,13 +89,17 @@ else:
             #echo "$dtNow" >> $logLocation
 
             # Set number of prallel streams
-            for streams in range(1,11): 
-                #print(streams)
+            for streams in range(1,2): 
+                print(streams)
                 # The complete iPerf3 command 
-                complete_command = base_command + ip_pool + client + " -P" + str(streams)
-                print(complete_command)
+                #complete_command = base_command + ip_pool + client + " -P" + str(streams)
+                iperf_client.num_streams = int(streams)
+                #print(complete_command)
                 #echo "Executing $finalCommand" #show current command on screen
                 #echo $finalCommand >> $logLocation 
                 #$finalCommand >> $logLocation # insert current command into log
+                result = iperf_client.run()
+                print(result)
+
 
             
