@@ -62,12 +62,15 @@ else:
     
         #echo $direction >> $logLocation # insert direction into log
         for iperf_server in iperf_servers:
-            print(ip_pool + iperf_server) # Show device ip on screen
+            client_address  = ip_pool + iperf_server # compose full ip address of device
+            #print("")
+            #print("Client: " + client_address)  # Show device ip on screen
             
             # Detailed time stamp for tests
             current_datetime = datetime.datetime.now().strftime("%04Y-%02m-%02d-%H-%M-%S")
-            print(current_datetime)
-            
+            #print(current_datetime)
+            print("Client: " + client_address + " TimeStamp: " + current_datetime)
+
             # Set number of prallel streams
             for streams in range(1,3): 
                 
@@ -76,34 +79,38 @@ else:
                 iperf_client.duration = test_duration
                 #iperf_client.verbose = True
                 
-                iperf_client.server_hostname = ip_pool + iperf_server # Use full ip address of device
+                iperf_client.server_hostname = client_address 
                 iperf_client.num_streams = int(streams)
                 if direction == "UP":
                     iperf_client.reverse = True # Device sends data to test runner
                 
-                print(streams)
+                #print(streams)
                 #print(direction)
                 #print(iperf_client.reverse)
                 result = iperf_client.run()
                 #print(result)
 
-                # Below code is copied from https://github.com/thiezn/iperf3-python/blob/master/examples/client.py
+                # Most of the below code is copied from https://github.com/thiezn/iperf3-python/blob/master/examples/client.py
                 if result.error:
                     print(result.error)
                 else:
-                    print('')
-                    print('Test completed:')
-                    print('  started at         {0}'.format(result.time))
-                    print('  bytes transmitted  {0}'.format(result.sent_bytes))
-                    print('  retransmits        {0}'.format(result.retransmits))
-                    print('  avg cpu load       {0}%\n'.format(result.local_cpu_total))
+                    
+                    #print('Test completed:')
+                    #print('  started at         {0}'.format(result.time))
+                    #print('  bytes transmitted  {0}'.format(result.sent_bytes))
+                    #print('  retransmits        {0}'.format(result.retransmits))
+                    #print('  avg cpu load       {0}%\n'.format(result.local_cpu_total))
 
-                    print('Average transmitted data in all sorts of networky formats:')
-                    print('  bits per second      (bps)   {0}'.format(result.sent_bps))
-                    print('  Kilobits per second  (kbps)  {0}'.format(result.sent_kbps))
-                    print('  Megabits per second  (Mbps)  {0}'.format(result.sent_Mbps))
-                    print('  KiloBytes per second (kB/s)  {0}'.format(result.sent_kB_s))
-                    print('  MegaBytes per second (MB/s)  {0}'.format(result.sent_MB_s))
+                    #print('Average transmitted data in all sorts of networky formats:')
+                    #print('  bits per second      (bps)   {0}'.format(result.sent_bps))
+                    #print('  Kilobits per second  (kbps)  {0}'.format(result.sent_kbps))
+                    #print('  Megabits per second  (Mbps)  {0}'.format(result.sent_Mbps))
+                    #print('  KiloBytes per second (kB/s)  {0}'.format(result.sent_kB_s))
+                    #print('  MegaBytes per second (MB/s)  {0}'.format(result.sent_MB_s))
+                    result_message  = "Streams: P%i Throughput: %i Mbits/sec" % (int(streams), int(result.sent_Mbps))
+                    print(result_message)
+
+
                 
                 # Can not reuse iPerf3 client after a test is completed.
                 # Destroy after each test to avoid "unable to send cookie to server" error for next run
