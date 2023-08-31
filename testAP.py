@@ -64,7 +64,7 @@ else:
         
             #echo $direction >> $logLocation # insert direction into log
             for iperf_server in iperf_servers:
-                server_address  = ip_pool + iperf_server # compose full ip address of device
+                server_address = ip_pool + iperf_server # compose full ip address of device
                 #print("")
                 #print("Client: " + server_address)  # Show device ip on screen
                 
@@ -113,7 +113,7 @@ else:
                         #print('  MegaBytes per second (MB/s)  {0}'.format(result.sent_MB_s))
                         result_message  = "Streams: %i, Throughput: %i Mbits/sec" % (int(streams), int(result.sent_Mbps))
                         print(result_message)
-                        out_file.write(result_message+"\n")
+                        out_file.write(result_message + "\n")
                             
                     # Can not reuse iPerf3 client after a test is completed.
                     # Destroy after each test to avoid "unable to send cookie to server" error for next run
