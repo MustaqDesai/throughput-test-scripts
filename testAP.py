@@ -58,7 +58,6 @@ else:
             print(direction) # Show direction on screen
             out_file.write(direction + "\n")
             
-            #echo $direction >> $logLocation # insert direction into log
             for iperf_server in iperf_servers:
                 server_address = ip_pool + iperf_server # compose full ip address of device
                 #print("")
