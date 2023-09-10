@@ -9,7 +9,7 @@ Before running the script, machine should have:
 - iPerf3 installed. I use a Ubuntu Linux machine.
 - iPerf3 or an app with iPerf3 installed on [mobile] clients.
 - Set executable permission on the script file.
-- Edit script file and change IP address values to your own.
+- Edit script file and update IP address values.
 
 ### Prerequisits for Python script
 Before running the script, machine you should have:
