@@ -11,6 +11,6 @@ Before running the script, machine should have:
 - Set executable permission on the script file.
 
 ### Prerequisits for Python script
-Before running the machine you should have:
+Before running the script, machine you should have:
 - Python3 installed.
 - iPerf3 library/module for Python installed. See https://pypi.org/project/iperf3/
