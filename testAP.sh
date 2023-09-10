@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Confirm all requried input is entered
+# Confirm all required input is entered
 if [ "$#" -ne "3" ]; then
   echo "ERROR: script needs 3 arguments, the firmware version, the friendly name of AP, and band (2G or 5G) being tested."
   echo
@@ -24,9 +24,9 @@ duration=30 # For quick tests
 mkdir -p $firmwareVersion/$apName # Create new folders if needed
 # Get today date for use in log file name
 dtToday=$(TZ=":America/Los_Angeles" date '+%Y'-'%m'-'%d');
-# Contruct log file name
+# Construct log file name
 logFile=$dtToday-$firmwareVersion-$apName-$band.log
-# Contruct log file location
+# Construct log file location
 logLocation=$firmwareVersion/$apName/$logFile
 # Show the location and name of log file
 echo "Logging results in $logLocation"
@@ -34,7 +34,7 @@ echo "Logging results in $logLocation"
 baseCommand="" # Start with empty string, to build an iPerf3 command
 
 # Main loop that sets direction of iPerf3 tests
-# Need to rememer that tests are controlled/executed/run from server, but are executed for mobile clients
+# Need to remember that tests are controlled/executed/run from server, but are executed for mobile clients
 # DN is when the mobile client is sending to sever
 # UP is when the mobile client is receiving from server
 for direction in DN UP; do
@@ -64,8 +64,8 @@ for direction in DN UP; do
       echo $finalCommand >> $logLocation 
       $finalCommand >> $logLocation # Insert current command into log
 
-      # Depending on the direcdtion, grab either the sender or receiver line of the iperf3 summary
-      # Importnat to know that the tests are executed from the server, so it is importnat to understande the receiver and sender roles
+      # Depending on the direction, grab either the sender or receiver line of the iperf3 summary
+      # Important to know that the tests are executed from the server, so it is important to understand the receiver and sender roles
 
       if [ $direction == DN ]; then # For DN direction, mobile client is the sender, so we log that
 	     tail -n10 $logLocation | awk '/\[/ && /sender/ {if($1~"[SUM]") {a=$6;b=$7} else {a=$7;b=$8}} END{print "Throughput: "a,b}' 
