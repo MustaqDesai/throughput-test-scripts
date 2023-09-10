@@ -5,7 +5,7 @@ testAP.sh: bash script to run iPerf3 commands to test Wi-Fi (on rotuers or acces
 testAP.py: same script in Python.
 
 ### Prerequisits
-Before running the script machine should have:
+Before running the script, machine should have:
 - iPerf3 installed. I use a Ubuntu Linux machine.
 - iPerf3 or an app with iPerf3 installed on [mobile] clients.
 - Set executable permission on the script file.
