@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# confirm all requried input is entered
+# Confirm all requried input is entered
 if [ "$#" -ne "3" ]; then
   echo "ERROR: script needs 3 arguments, the firmware version, the friendly name of AP, and band (2G or 5G) being tested."
   echo
